@@ -42,9 +42,8 @@ class Profile extends React.Component {
   }
 
   UNSAFE_componentWillMount() {
-    setInterval(this.getData, 1000); // runs every 1 seconds.     
+    setInterval(this.getData, 3000); // runs every 3 seconds.     
   }
-
   getData = () => {
     const user = Firebase.auth().currentUser
     if (user) {
@@ -74,44 +73,58 @@ class Profile extends React.Component {
     console.disableYellowBox = true;
   }
 
-  updateDetails = async() => {
-  //  requestAnimationFrame(() => {
-      if (this.state.showDetails == true && this.state.showUpdate == false) {
-        this.setState({
-          showDetails: false,
-          showUpdate: true,
-          updateText: 'Save Details'
-        })
-      }
+  updateDetails = () => {
+    if (this.state.showDetails == true && this.state.showUpdate == false) {
+      this.setState({
+        showDetails: false,
+        showUpdate: true,
+        updateText: 'Save Details'
+      })
+    }
 
-      if (this.state.showUpdate == true && this.state.showDetails == false) {
-        this.setState({
-          showDetails: true,
-          showUpdate: false,
-          updateText: 'Update Details'
+    if (this.state.showUpdate == true && this.state.showDetails == false) {
+      this.setState({
+        showDetails: true,
+        showUpdate: false,
+        updateText: 'Update Details'
+      })
+      const user = Firebase.auth().currentUser
+      if (this.state.Weightt != null && this.state.Heightt != null) {
+        Firebase.firestore().collection('Users').doc(user.uid).update({
+          Height: this.state.Heightt,
+          Weight: this.state.Weightt
         })
-        const user = Firebase.auth().currentUser
-        if (this.state.Weightt != null && this.state.Heightt != null) {
-          Firebase.firestore().collection('Users').doc(user.uid).update({
-            Height: this.state.Heightt,
-            Weight: this.state.Weightt
-          }).then(Alert.alert("Height & Weight Updated"))
-        }
-        if (this.state.Weightt == null && this.state.Heightt != null) {
-          Firebase.firestore().collection('Users').doc(user.uid).update({
-            Height: this.state.Heightt,
-          }).then(Alert.alert("Height Updated"))
-        }
-        if (this.state.Weightt != null && this.state.Heightt == null) {
-          Firebase.firestore().collection('Users').doc(user.uid).update({
-            Weight: this.state.Weightt
-          }).then(Alert.alert("Weight Updated"))
-        }
-        if (this.state.Weightt == null && this.state.Heightt == null) {
-          Alert.alert("Update Failed", "Height and Weight Fields Both are Empty")
-        }
+          .then(
+            this.setState({
+              Weightt: null,
+              Heightt: null
+            }),
+            Alert.alert("Height & Weight Updated"))
       }
-   // });
+      if (this.state.Weightt == null && this.state.Heightt != null) {
+        Firebase.firestore().collection('Users').doc(user.uid).update({
+          Height: this.state.Heightt,
+        })
+          .then(
+            this.setState({
+              Heightt: null
+            }),
+            Alert.alert("Height Updated"))
+      }
+      if (this.state.Weightt != null && this.state.Heightt == null) {
+        Firebase.firestore().collection('Users').doc(user.uid).update({
+          Weight: this.state.Weightt
+        })
+          .then(
+            this.setState({
+              Weightt: null
+            }),
+            Alert.alert("Weight Updated"))
+      }
+      if (this.state.Weightt == null && this.state.Heightt == null) {
+        Alert.alert("Update Failed", "Height and Weight Fields Both are Empty")
+      }
+    }
   }
 
 

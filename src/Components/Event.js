@@ -9,6 +9,7 @@ import Firebase from '../config/firebase';
 import moment from 'moment';
 import { withNavigationFocus } from 'react-navigation';
 
+
 var jan = 'To complete the task of January month you have to walk 2,20,000 stpes which is roughly 168 km. While doing that you will approximately burn 8800 cal. If you Succeed, you will get "2200" Points';
 var feb = 'To complete the task of February month you have to walk 2,00,000 stpes which is roughly 153 km. While doing that you will approximately burn 8000 cal. If you Succeed, you will get "2000" Points';
 var mar = 'To complete the task of March month you have to walk 2,20,000 stpes which is roughly 168 km. While doing that you will approximately burn 8800 cal. If you Succeed, you will get "2200" Points';
@@ -59,12 +60,12 @@ class Event extends React.Component {
 
     accessToken: null,
     fillStpes: 50,
-    date: '2020-01-08'
+    date: null
   }
 
 
   UNSAFE_componentWillMount = () => {
-    setInterval(this.getData, 1000); // runs every 1 seconds.      
+    setInterval(this.getData, 3000); // runs every 3 seconds.      
   }
 
   getData = async () => {
@@ -86,17 +87,16 @@ class Event extends React.Component {
     // 1st day event
     if ((moment().format('Do')) == '1st') {
       let secondEventBooked = await AsyncStorage.getItem("secondEventBooked")
-      if (secondEventBooked == true) {
+      if (secondEventBooked) {
         let firstEventDate = moment().format('YYYY-MM-DD')
-        let firstEventBooked = true
+        let firstEventBooked = "Booked"
         await AsyncStorage.setItem('firstEventDate', firstEventDate)
         await AsyncStorage.setItem('firstEventBooked', firstEventBooked)
-        let reset = false
-        await AsyncStorage.setItem('secondEventBooked', reset);
+        await AsyncStorage.removeItem('secondEventBooked');
       }
-      if (secondEventBooked == false) {
-        let firstEventBooked = false
-        await AsyncStorage.setItem('firstEventBooked', firstEventBooked)
+      else {
+        await AsyncStorage.removeItem('firstEventBooked');
+        await AsyncStorage.removeItem('firstEventDate');
       }
     }
 
@@ -112,31 +112,35 @@ class Event extends React.Component {
       })
     }
 
-
+    //manage 1st event
     let firstEventBooked = await AsyncStorage.getItem("firstEventBooked")
-    if (firstEventBooked == true) {
+    let firstEventDate = await AsyncStorage.getItem('firstEventDate')
+    if (firstEventBooked) {
       this.setState({
         FE_Initial: false,
         FE_Middle: true,
         FE_Final: false,
+        date: firstEventDate
       })
+      this.setData
     }
     else {
       this.setState({
         FE_Initial: true,
         FE_Middle: false,
         FE_Final: false,
+        date: null
       })
     }
 
     //manage second card
     let secondEventBooked = await AsyncStorage.getItem("secondEventBooked")
-    if (secondEventBooked == true) {
+    if (secondEventBooked) {
       this.setState({
         eventCard2BtnTxt: 'Joined!!!',
       })
     }
-    if (secondEventBooked == false) {
+    else {
       this.setState({
         eventCard2BtnTxt: 'Join Now',
       })
@@ -144,19 +148,17 @@ class Event extends React.Component {
 
     //Fitbit data...
     let Access_Token = await AsyncStorage.getItem("token")
-    if (Access_Token == null) {
-      console.log("no data")
-    }
-    else {
+    if (Access_Token != null) {
       this.setState({
         accessToken: Access_Token
       })
     }
-
   }
 
   setData = () => {
-    fetch('https://api.fitbit.com/1.2/user/-/activities/calories/' + this.sate.date + '/today/1m.json', {
+    let today = moment().format('YYYY-MM-DD')
+    fetch('https://api.fitbit.com/1.2/user/-/activities/tracker/steps/date/' + this.state.date + '/' + today + '.json', {
+    //fetch('https://api.fitbit.com/1.2/user/-/activities/stpes/' + this.sate.date + '/'+today+'.json', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${this.state.data}`,
@@ -171,16 +173,20 @@ class Event extends React.Component {
       });
   }
 
-  joinPressed1 = async () => {
-    let firstEventDate = moment().format('YYYY-MM-DD')
-    let firstEventBooked = true
-    await AsyncStorage.setItem('firstEventDate', firstEventDate)
-    await AsyncStorage.setItem('firstEventBooked', firstEventBooked)
+  joinPressed1 = () => {
+    requestAnimationFrame(async () => {
+      let firstEventDate = moment().format('YYYY-MM-DD')
+      let firstEventBooked = 'Booked'
+      await AsyncStorage.setItem('firstEventDate', firstEventDate)
+      await AsyncStorage.setItem('firstEventBooked', firstEventBooked)
+    });
   }
 
-  joinPressed2 = async () => {
-    let secondEventBooked = true
-    await AsyncStorage.setItem('secondEventBooked', secondEventBooked)
+  joinPressed2 = () => {
+    requestAnimationFrame(async () => {
+      let secondEventBooked = "PreBooked"
+      await AsyncStorage.setItem('secondEventBooked', secondEventBooked)
+    });
   }
 
   viewPresed = () => {

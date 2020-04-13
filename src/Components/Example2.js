@@ -3,12 +3,15 @@ import { View, Text, StyleSheet, Linking, TouchableOpacity, AsyncStorage } from 
 import LinearGradient from 'react-native-linear-gradient';
 import qs from 'qs';
 import config from '../config/config'
+import moment from 'moment';
 import { withNavigationFocus } from 'react-navigation';
 
-class Example2 extends React.Component {
+class Activity extends React.Component {
 
   state = {
-    data: null
+    data: null,
+    date: '2020-04-01',
+    stpes: null
   }
 
   OAuth(client_id) {
@@ -43,11 +46,11 @@ class Example2 extends React.Component {
         await AsyncStorage.setItem("token", token)
       }
     }
-
   }
 
   getData = () => {
-    fetch('https://api.fitbit.com/1.2/user/-/activities/calories/date/today/1m.json', {
+    today = moment().format('YYYY-MM-DD')
+    fetch('https://api.fitbit.com/1.2/user/-/activities/tracker/steps/date/' + this.state.date + '/' + today + '.json', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${this.state.data}`,
@@ -56,6 +59,9 @@ class Example2 extends React.Component {
       .then(res => res.json())
       .then(res => {
         console.log(`res: ${JSON.stringify(res)}`);
+        this.setState({
+          stpes: `${JSON.stringify(res)}`
+        })
       })
       .catch(err => {
         console.error('Error: ', err);
@@ -65,7 +71,7 @@ class Example2 extends React.Component {
   UNSAFE_componentWillMount = async () => {
     let Access_Token = await AsyncStorage.getItem("token")
     if (Access_Token == null) {
-      this.OAuth(config.client_id, this.getData);
+      this.OAuth(config.client_id);
     }
     else {
       this.setState({
@@ -79,6 +85,7 @@ class Example2 extends React.Component {
       <LinearGradient colors={["#232f34", '#2e3e50', '#2e3e50']} style={styles.container} >
         <View style={styles.container}>
           <Text style={{ color: '#fff' }}>{this.state.data}</Text>
+          <Text style={{ color: '#fff' }}>{this.state.stpes}</Text>
         </View>
       </LinearGradient>
     );
@@ -106,4 +113,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default withNavigationFocus(Example2);
+export default withNavigationFocus(Activity);

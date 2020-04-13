@@ -3,13 +3,15 @@ import { View, Text, StyleSheet, Linking, TouchableOpacity, AsyncStorage } from 
 import LinearGradient from 'react-native-linear-gradient';
 import qs from 'qs';
 import config from '../config/config'
+import moment from 'moment';
 import { withNavigationFocus } from 'react-navigation';
 
 class Activity extends React.Component {
 
   state = {
     data: null,
-    date: '2020-03-20'
+    date: '2020-04-01',
+    stpes: null
   }
 
   OAuth(client_id) {
@@ -33,7 +35,7 @@ class Activity extends React.Component {
         console.log('Deeplinking error', err)
       })
 
-      handleUrl = async(event) => {
+    handleUrl = async (event) => {
       if (event) {
         console.log(event);
         const [, query_string] = event.match(/\#(.*)/);
@@ -44,11 +46,11 @@ class Activity extends React.Component {
         await AsyncStorage.setItem("token", token)
       }
     }
-
   }
 
   getData = () => {
-    fetch('https://api.fitbit.com/1.2/user/-/activities/calories/date/'+this.state.date+'/1d.json', {
+    today = moment().format('YYYY-MM-DD')
+    fetch('https://api.fitbit.com/1.2/user/-/activities/tracker/steps/date/' + this.state.date + '/' + today + '.json', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${this.state.data}`,
@@ -57,6 +59,9 @@ class Activity extends React.Component {
       .then(res => res.json())
       .then(res => {
         console.log(`res: ${JSON.stringify(res)}`);
+        this.setState({
+          stpes: `${JSON.stringify(res)}`
+        })
       })
       .catch(err => {
         console.error('Error: ', err);
@@ -80,6 +85,7 @@ class Activity extends React.Component {
       <LinearGradient colors={["#232f34", '#2e3e50', '#2e3e50']} style={styles.container} >
         <View style={styles.container}>
           <Text style={{ color: '#fff' }}>{this.state.data}</Text>
+          <Text style={{ color: '#fff' }}>{this.state.stpes}</Text>
         </View>
       </LinearGradient>
     );

@@ -43,7 +43,7 @@ class Diet extends React.Component {
     fiveMeal: false
   }
   UNSAFE_componentWillMount() {
-    setInterval(this.getData, 1000); // runs every 1 seconds.   
+    setInterval(this.getData, 3000); // runs every 3 seconds.   
   }
 
   getData = () => {
@@ -166,7 +166,6 @@ class Diet extends React.Component {
   }
 
   render() {
-    console.ignoredYellowBox = ['Setting a timer'];
     return (
       <LinearGradient colors={["#232f34", '#2e3e50', '#2e3e50']} style={styles.container} >
         <ScrollView>
@@ -368,6 +367,7 @@ class Diet extends React.Component {
             <Divider orientation="center">
               <Text style={{ fontSize: 32, color: '#2ecc71', fontWeight: 'bold' }}>Diet</Text>
             </Divider>
+            
           </View>
         </ScrollView>
       </LinearGradient>
