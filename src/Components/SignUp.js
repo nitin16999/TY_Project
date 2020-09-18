@@ -82,10 +82,10 @@ export default class SignUp extends React.Component {
             BDate: this.props.navigation.state.params.user.date,
             Points: 0
           })
-            .then( async() =>{
+            .then(async () => {
               console.log("Document added");
               let userId = cred.user.uid;
-              await AsyncStorage.setItem("userId",userId)
+              await AsyncStorage.setItem("userId", userId)
             }
 
             )

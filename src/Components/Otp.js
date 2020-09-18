@@ -23,7 +23,7 @@ export default class Otp extends React.Component {
     if (regex.test(v) != true) {
       Alert.alert("Enter Correct E-Mail Address.");
     }
-  }
+  };
 
   otpHandler = () => {
     //function to make simple alert 
@@ -36,7 +36,8 @@ export default class Otp extends React.Component {
       })
         .catch((error) => Alert.alert("Failed", error.message))
     }
-  }
+  };
+
   render() {
     return (
       <LinearGradient colors={["#232f34", '#2e3e50', '#2e3e50']} style={styles.container} >

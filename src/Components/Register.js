@@ -209,7 +209,7 @@ export default class Splash extends React.Component {
               />
             </View>
 
-            <View style={{ alignItems: 'center', paddingRight: 10, paddingTop: 20 }}>
+            <View style={{ alignItems: 'center', paddingRight: 10, paddingTop: 30 }}>
               <TouchableOpacity style={styles.button}
                 onPress={this.final_Submission}>
                 <Text style={styles.buttonText}>Submit</Text>

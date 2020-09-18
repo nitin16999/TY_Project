@@ -8,12 +8,12 @@ export default class Splash extends React.Component {
   };
 
   UNSAFE_componentWillMount = () => {
-    setTimeout( async() => {
+    setTimeout(async () => {
       let userId = await AsyncStorage.getItem("userId")
       if (userId) {
         this.props.navigation.navigate('home')
       }
-      else{
+      else {
         this.props.navigation.navigate('main')
       }
     }, 2000)

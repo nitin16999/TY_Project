@@ -32,17 +32,33 @@ class Profile extends React.Component {
     Heightt: null
   }
 
-  Logout = () => {
-    Firebase.auth().signOut().then(async () => {
-      await AsyncStorage.removeItem('userId');
-      BackHandler.exitApp()
-      console.log("LogOut successful")
-    })
-      .catch((error) => Alert.alert("LogOut Failed", error.message));
+  Logout = async () => {
+
+    Alert.alert(
+      'Exit App',
+      'Exiting the application?', [{
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel'
+      }, {
+        text: 'Ok',
+        onPress: () => Firebase.auth().signOut().then(async () => {
+          await AsyncStorage.removeItem('userId');
+          BackHandler.exitApp()
+          console.log("LogOut successful")
+        })
+          .catch((error) => Alert.alert("LogOut Failed", error.message))
+      },], {
+      cancelable: false
+    }
+    )
+
+
+
   }
 
   UNSAFE_componentWillMount() {
-    setInterval(this.getData, 3000); // runs every 3 seconds.     
+    setInterval(this.getData, 4000); // runs every 3 seconds.     
   }
   getData = () => {
     const user = Firebase.auth().currentUser
@@ -130,137 +146,139 @@ class Profile extends React.Component {
 
   render() {
     return (
+
       <LinearGradient colors={["#232f34", '#2e3e50', '#2e3e50']} style={styles.container} >
-        <ScrollView>
-          <View style={styles.container}>
+        <View style={{ width: '100%', Height: '100%' }}>
+          <ScrollView>
+            <View style={styles.container}>
 
-            <Divider orientation="center">
-              <Text style={styles.heading}>Profile</Text>
-            </Divider>
+              <Divider orientation="center">
+                <Text style={styles.heading}>Profile</Text>
+              </Divider>
 
-            <View flexDirection='row' paddingTop={5}>
+              <View flexDirection='row' paddingTop={5}>
+                <CardView
+                  cardElevation={30}
+                  cornerRadius={40}
+                  style={{
+                    width: 100,
+                    marginVertical: 10,
+                    marginHorizontal: 10,
+                    backgroundColor: '#2e3e50',
+                  }}>
+
+                  {this.state.Female ?
+                    <View>
+                      <Icon style={{ paddingLeft: 38, paddingRight: 0, paddingBottom: 20, paddingTop: 20 }} name='ios-woman' size={50} color='#e74c3c' />
+                    </View>
+                    : null}
+
+                  {this.state.Male ?
+                    <View>
+                      <Icon style={{ paddingLeft: 38, paddingRight: 0, paddingBottom: 20, paddingTop: 20 }} name='ios-man' size={50} color='#e74c3c' />
+                    </View>
+                    : null}
+
+                </CardView>
+                <View flexDirection='column' style={{ paddingLeft: 10 }}>
+                  <Text style={{ color: '#3498db', fontSize: 35, fontWeight: 'bold', paddingTop: 20 }}>{this.state.Name}</Text>
+                  <Text style={{ color: '#fff', fontSize: 15 }}>{this.state.Email}</Text>
+                </View>
+              </View>
+
+              <Divider orientation="center">
+                <Text style={styles.heading}>Details</Text>
+              </Divider>
+
               <CardView
                 cardElevation={30}
                 cornerRadius={40}
                 style={{
-                  width: 100,
-                  marginVertical: 10,
+                  width: 340,
+                  tintColor: 'rgba(255, 255,255,5)',
+                  marginVertical: 20,
                   marginHorizontal: 10,
-                  backgroundColor: '#2e3e50',
+                  backgroundColor: '#232f34'
                 }}>
+                <LinearGradient colors={['#2e3e50', '#232f34']}>
 
-                {this.state.Female ?
-                  <View>
-                    <Icon style={{ paddingLeft: 38, paddingRight: 0, paddingBottom: 20, paddingTop: 20 }} name='ios-woman' size={50} color='#e74c3c' />
-                  </View>
-                  : null}
+                  {this.state.showDetails ?
+                    <View style={{ alignSelf: 'flex-start' }}>
 
-                {this.state.Male ?
-                  <View>
-                    <Icon style={{ paddingLeft: 38, paddingRight: 0, paddingBottom: 20, paddingTop: 20 }} name='ios-man' size={50} color='#e74c3c' />
-                  </View>
-                  : null}
+                      <View flexDirection='row'>
+                        <Text style={{ color: '#fff', fontSize: 19, paddingBottom: 20, paddingTop: 20, paddingLeft: 35 }}>Height:</Text>
+                        <Text style={{ color: '#fff', fontSize: 19, fontWeight: 'bold', paddingBottom: 20, paddingTop: 20, paddingLeft: 10 }}> {this.state.Height}cm.</Text>
+                      </View>
 
-              </CardView>
-              <View flexDirection='column' style={{ paddingLeft: 10 }}>
-                <Text style={{ color: '#3498db', fontSize: 35, fontWeight: 'bold', paddingTop: 20 }}>{this.state.Name}</Text>
-                <Text style={{ color: '#fff', fontSize: 15 }}>{this.state.Email}</Text>
-              </View>
-            </View>
+                      <View flexDirection='row'>
+                        <Text style={{ color: '#fff', fontSize: 19, paddingBottom: 20, paddingLeft: 35 }}>Weight:</Text>
+                        <Text style={{ color: '#fff', fontSize: 19, fontWeight: 'bold', paddingBottom: 20, paddingLeft: 10 }}> {this.state.Weight}kg.</Text>
+                      </View>
 
-            <Divider orientation="center">
-              <Text style={styles.heading}>Details</Text>
-            </Divider>
+                      <View flexDirection='row'>
+                        <Text style={{ color: '#fff', fontSize: 19, paddingBottom: 20, paddingLeft: 35 }}>Birth Date:</Text>
+                        <Text style={{ color: '#fff', fontSize: 19, fontWeight: 'bold', paddingBottom: 20, paddingLeft: 10 }}> {this.state.BDate}</Text>
+                      </View>
 
-            <CardView
-              cardElevation={30}
-              cornerRadius={40}
-              style={{
-                width: 340,
-                tintColor: 'rgba(255, 255,255,5)',
-                marginVertical: 20,
-                marginHorizontal: 10,
-                backgroundColor: '#232f34'
-              }}>
-              <LinearGradient colors={['#2e3e50', '#232f34']}>
+                      <View flexDirection='row'>
+                        <Text style={{ color: '#fff', fontSize: 19, paddingBottom: 20, paddingLeft: 35 }}>Points:</Text>
+                        <Text style={{ color: '#fff', fontSize: 19, fontWeight: 'bold', paddingBottom: 20, paddingLeft: 10 }}> {this.state.Points} Pts.</Text>
+                      </View>
 
-                {this.state.showDetails ?
-                  <View style={{ alignSelf: 'flex-start' }}>
 
-                    <View flexDirection='row'>
-                      <Text style={{ color: '#fff', fontSize: 19, paddingBottom: 20, paddingTop: 20, paddingLeft: 35 }}>Height:</Text>
-                      <Text style={{ color: '#fff', fontSize: 19, fontWeight: 'bold', paddingBottom: 20, paddingTop: 20, paddingLeft: 10 }}> {this.state.Height}cm.</Text>
                     </View>
+                    : null}
 
-                    <View flexDirection='row'>
-                      <Text style={{ color: '#fff', fontSize: 19, paddingBottom: 20, paddingLeft: 35 }}>Weight:</Text>
-                      <Text style={{ color: '#fff', fontSize: 19, fontWeight: 'bold', paddingBottom: 20, paddingLeft: 10 }}> {this.state.Weight}kg.</Text>
+                  {this.state.showUpdate ?
+                    <View style={{ alignSelf: 'flex-start' }}>
+
+                      <View flexDirection='row'>
+                        <Text style={{ color: '#fff', fontSize: 19, paddingBottom: 20, paddingTop: 33, paddingLeft: 25, paddingRight: 10 }}>Height:</Text>
+                        <TextInput style={styles.inputBox}
+                          placeholder='here..'
+                          selectionColor="#232f34"
+                          keyboardType="numeric"
+                          placeholderTextColor="rgba(255, 255,255,0.9)"
+                          onChangeText={Heightt => this.setState({ Heightt })}
+                        />
+                      </View>
+
+                      <View flexDirection='row'>
+                        <Text style={{ color: '#fff', fontSize: 19, paddingBottom: 30, paddingLeft: 25, paddingTop: 33, paddingRight: 10 }}>Weight:</Text>
+                        <TextInput style={styles.inputBox}
+                          placeholder='here..'
+                          selectionColor="#232f34"
+                          keyboardType="numeric"
+                          placeholderTextColor="rgba(255, 255,255,0.9)"
+                          onChangeText={Weightt => this.setState({ Weightt })}
+                        />
+                      </View>
+
                     </View>
+                    : null}
 
-                    <View flexDirection='row'>
-                      <Text style={{ color: '#fff', fontSize: 19, paddingBottom: 20, paddingLeft: 35 }}>Birth Date:</Text>
-                      <Text style={{ color: '#fff', fontSize: 19, fontWeight: 'bold', paddingBottom: 20, paddingLeft: 10 }}> {this.state.BDate}</Text>
-                    </View>
-
-                    <View flexDirection='row'>
-                      <Text style={{ color: '#fff', fontSize: 19, paddingBottom: 20, paddingLeft: 35 }}>Points:</Text>
-                      <Text style={{ color: '#fff', fontSize: 19, fontWeight: 'bold', paddingBottom: 20, paddingLeft: 10 }}> {this.state.Points} Pts.</Text>
-                    </View>
-
-
-                  </View>
-                  : null}
-
-                {this.state.showUpdate ?
-                  <View style={{ alignSelf: 'flex-start' }}>
-
-                    <View flexDirection='row'>
-                      <Text style={{ color: '#fff', fontSize: 19, paddingBottom: 20, paddingTop: 33, paddingLeft: 25, paddingRight: 10 }}>Height:</Text>
-                      <TextInput style={styles.inputBox}
-                        placeholder='here..'
-                        selectionColor="#232f34"
-                        keyboardType="numeric"
-                        placeholderTextColor="rgba(255, 255,255,0.9)"
-                        onChangeText={Heightt => this.setState({ Heightt })}
-                      />
-                    </View>
-
-                    <View flexDirection='row'>
-                      <Text style={{ color: '#fff', fontSize: 19, paddingBottom: 30, paddingLeft: 25, paddingTop: 33, paddingRight: 10 }}>Weight:</Text>
-                      <TextInput style={styles.inputBox}
-                        placeholder='here..'
-                        selectionColor="#232f34"
-                        keyboardType="numeric"
-                        placeholderTextColor="rgba(255, 255,255,0.9)"
-                        onChangeText={Weightt => this.setState({ Weightt })}
-                      />
-                    </View>
-
-                  </View>
-                  : null}
-
-                <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 16, paddingBottom: 10 }} numberOfLines={1}>
-                  ___________________________________________________
+                  <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 16, paddingBottom: 10 }} numberOfLines={1}>
+                    __________________________________________________
                 </Text>
 
-                <View>
-                  <TouchableOpacity onPress={this.updateDetails} style={{ paddingBottom: 10 }}>
-                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#3498db', paddingLeft: 115 }}>{this.state.updateText}</Text>
-                  </TouchableOpacity>
-                </View>
+                  <View>
+                    <TouchableOpacity onPress={this.updateDetails} style={{ paddingBottom: 10 }}>
+                      <Text style={{ fontSize: 19, fontWeight: 'bold', color: '#3498db', paddingLeft: 115 }}>{this.state.updateText}</Text>
+                    </TouchableOpacity>
+                  </View>
 
 
-              </LinearGradient>
-            </CardView>
+                </LinearGradient>
+              </CardView>
 
-            <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 17, paddingLeft: 15, paddingBottom: 30, paddingTop: 5 }}>Note: Update your Height and Weight monthly or weekly for better diet plan.</Text>
+              <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 17, paddingLeft: 15, paddingBottom: 30, paddingTop: 5 }}>Note: Update your Height and Weight monthly or weekly for better diet plan.</Text>
 
-            <TouchableOpacity onPress={() => this.Logout()} style={styles.button} >
-              <Text style={styles.buttonText}>LogOut</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-
+              <TouchableOpacity onPress={() => this.Logout()} style={styles.button} >
+                <Text style={styles.buttonText}>LogOut</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
       </LinearGradient>
     )
   }

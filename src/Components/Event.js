@@ -65,7 +65,7 @@ class Event extends React.Component {
 
 
   UNSAFE_componentWillMount = () => {
-    setInterval(this.getData, 3000); // runs every 3 seconds.      
+    setInterval(this.getData, 4000); // runs every 3 seconds.      
   }
 
   getData = async () => {
@@ -158,7 +158,7 @@ class Event extends React.Component {
   setData = () => {
     let today = moment().format('YYYY-MM-DD')
     fetch('https://api.fitbit.com/1.2/user/-/activities/tracker/steps/date/' + this.state.date + '/' + today + '.json', {
-    //fetch('https://api.fitbit.com/1.2/user/-/activities/stpes/' + this.sate.date + '/'+today+'.json', {
+      //fetch('https://api.fitbit.com/1.2/user/-/activities/stpes/' + this.sate.date + '/'+today+'.json', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${this.state.data}`,
@@ -209,133 +209,131 @@ class Event extends React.Component {
 
       <LinearGradient colors={['#232f34', '#2e3e50', '#2e3e50']} style={styles.container} >
         <ScrollView>
-          <Divider orientation="center">
-            <Text style={styles.heading}>Events</Text>
-          </Divider>
+          <View style={{ width: 400, alignItems: 'center' }}>
+            <Divider orientation="center">
+              <Text style={styles.heading}>Events</Text>
+            </Divider>
 
-          <CardView
-            cardElevation={30}
-            cornerRadius={40}
-            style={{
-              width: 340,
-              tintColor: 'rgba(255, 255,255,5)',
-              marginVertical: 20,
-              marginHorizontal: 10,
-              backgroundColor: '#232f34'
-            }}>
-            <LinearGradient colors={['#2e3e50', '#232f34']}>
-              {
-                this.state.FE_Initial ?
-                  <View>
-                    <Text style={{ fontSize: 27, fontWeight: 'bold', color: '#fff', textAlign: 'center', paddingTop: 10 }}>{this.state.firstCardHed}</Text>
-                    <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                      ____________________________________________________
-                    </Text>
-                    <Text style={{ paddingTop: 5, paddingLeft: 10, paddingRight: 0, color: "#fff", fontSize: 16, fontWeight: '100' }}>   {(this.state.firstCardDis)}</Text>
-                    <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                      ____________________________________________________
-                    </Text>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>Start Date: {moment().startOf('month').format('DD-MM-YYYY')}</Text>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>End Date: {moment().endOf('month').format('DD-MM-YYYY')}</Text>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>Target To Achive: {this.state.targetStpes1} Stpes</Text>
-                    <View flexDirection='row'>
-                      <TouchableOpacity onPress={this.joinPressed1} style={styles.button}>
-                        <Text style={styles.buttonText}>Join Now</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  : null
-              }
-              {
-                this.state.FE_Middle ?
-                  <View>
-                    <LinearGradient colors={['#2e3e50', '#232f34']}>
+            <CardView
+              cardElevation={30}
+              cornerRadius={40}
+              style={{
+                width: 340,
+                tintColor: 'rgba(255, 255,255,5)',
+                marginVertical: 20,
+                marginHorizontal: 10,
+                backgroundColor: '#232f34',
+              }}>
+              <LinearGradient colors={['#2e3e50', '#232f34']}>
+                {
+                  this.state.FE_Initial ?
+                    <View>
                       <Text style={{ fontSize: 27, fontWeight: 'bold', color: '#fff', textAlign: 'center', paddingTop: 10 }}>{this.state.firstCardHed}</Text>
                       <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
                         ____________________________________________________
-                      </Text>
+                    </Text>
+                      <Text style={{ paddingTop: 5, paddingLeft: 10, paddingRight: 0, color: "#fff", fontSize: 16, fontWeight: '100' }}>   {(this.state.firstCardDis)}</Text>
+                      <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
+                        ____________________________________________________
+                    </Text>
+                      <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>Start Date: {moment().startOf('month').format('DD-MM-YYYY')}</Text>
+                      <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>End Date: {moment().endOf('month').format('DD-MM-YYYY')}</Text>
+                      <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>Target To Achive: {this.state.targetStpes1} Stpes</Text>
                       <View flexDirection='row'>
-                        <Text>                                         </Text>
-                        <AnimatedCircularProgress
-                          style={{ paddingLeft: 0, paddingBottom: 20, paddingTop: 10 }}
-                          size={100}
-                          width={15}
-                          fill={this.state.fillStpes}
-                          tintColor="#fff"
-                          backgroundColor="#3d5875">
-                          {
-                            (fill) => (
-                              <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold', paddingLeft: 7, paddingTop: 19 }}>
-                                {this.state.fillStpes}%
-                              </Text>
-                            )
-                          }
-                        </AnimatedCircularProgress>
+                        <TouchableOpacity onPress={this.joinPressed1} style={styles.button}>
+                          <Text style={styles.buttonText}>Join Now</Text>
+                        </TouchableOpacity>
                       </View>
-                      <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                        ____________________________________________________
+                    </View>
+                    : null
+                }
+                {
+                  this.state.FE_Middle ?
+                    <View>
+                      <LinearGradient colors={['#2e3e50', '#232f34']}>
+                        <Text style={{ fontSize: 27, fontWeight: 'bold', color: '#fff', textAlign: 'center', paddingTop: 10 }}>{this.state.firstCardHed}</Text>
+                        <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
+                          ____________________________________________________
                       </Text>
-                      <Text style={{ fontSize: 18, fontWeight: '900', color: '#3498db', textAlign: 'left', paddingLeft: 30 }}>Start Date: {moment().startOf('month').format('DD-MM-YYYY')}</Text>
-                      <Text style={{ fontSize: 18, fontWeight: '900', color: '#3498db', textAlign: 'left', paddingLeft: 30 }}>End Date: {moment().endOf('month').format('DD-MM-YYYY')}</Text>
-
-                      <Text style={{ fontSize: 18, fontWeight: '900', color: '#fff', textAlign: 'left', paddingLeft: 30, paddingBottom: 0 }}>Days Left: {daysLeftEventOne}</Text>
-                      <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                        ____________________________________________________
+                        <View flexDirection='row'>
+                          <Text>                                         </Text>
+                          <AnimatedCircularProgress
+                            style={{ paddingLeft: 0, paddingBottom: 20, paddingTop: 10 }}
+                            size={100}
+                            width={15}
+                            fill={this.state.fillStpes}
+                            tintColor="#fff"
+                            backgroundColor="#3d5875">
+                            {
+                              (fill) => (
+                                <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold', paddingLeft: 7, paddingTop: 19 }}>
+                                  {this.state.fillStpes}%
+                                </Text>
+                              )
+                            }
+                          </AnimatedCircularProgress>
+                        </View>
+                        <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
+                          ____________________________________________________
                       </Text>
-                      <Text style={{ fontSize: 18, fontWeight: '900', color: '#3498db', textAlign: 'left', paddingLeft: 30 }}>Target To Achive: {this.state.targetStpes1} Stpes</Text>
-                      <Text style={{ fontSize: 18, fontWeight: '900', color: '#fff', textAlign: 'left', paddingLeft: 30 }}>stpes Done: 60,000</Text>
-                      <Text style={{ fontSize: 18, fontWeight: '900', color: '#fff', textAlign: 'left', paddingLeft: 30, paddingBottom: 20 }}>stpes Left: 60,000</Text>
-                    </LinearGradient>
-                  </View>
-                  : null
-              }
-              {
-                this.state.FE_Final ?
-                  <View>
-                    <Text>Task Completed</Text>
-                  </View>
-                  : null
-              }
-            </LinearGradient>
-          </CardView>
+                        <Text style={{ fontSize: 18, fontWeight: '900', color: '#3498db', textAlign: 'left', paddingLeft: 30 }}>Start Date: {moment().startOf('month').format('DD-MM-YYYY')}</Text>
+                        <Text style={{ fontSize: 18, fontWeight: '900', color: '#3498db', textAlign: 'left', paddingLeft: 30 }}>End Date: {moment().endOf('month').format('DD-MM-YYYY')}</Text>
 
-          {this.state.secondCardVisible ?
-            <View>
-              <CardView
-                cardElevation={30}
-                cornerRadius={40}
-                style={styles.cardViewStyle}>
-                <LinearGradient colors={["#2e3e50", '#232f34']}>
-                  <Text style={{ fontSize: 27, fontWeight: 'bold', color: '#fff', textAlign: 'center', paddingTop: 10 }}>{this.state.secondCardHed}</Text>
-                  <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                    ____________________________________________________
+                        <Text style={{ fontSize: 18, fontWeight: '900', color: '#fff', textAlign: 'left', paddingLeft: 30, paddingBottom: 0 }}>Days Left: {daysLeftEventOne}</Text>
+                        <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
+                          ____________________________________________________
+                      </Text>
+                        <Text style={{ fontSize: 18, fontWeight: '900', color: '#3498db', textAlign: 'left', paddingLeft: 30 }}>Target To Achive: {this.state.targetStpes1} Stpes</Text>
+                        <Text style={{ fontSize: 18, fontWeight: '900', color: '#fff', textAlign: 'left', paddingLeft: 30 }}>stpes Done: 60,000</Text>
+                        <Text style={{ fontSize: 18, fontWeight: '900', color: '#fff', textAlign: 'left', paddingLeft: 30, paddingBottom: 20 }}>stpes Left: 60,000</Text>
+                      </LinearGradient>
+                    </View>
+                    : null
+                }
+                {
+                  this.state.FE_Final ?
+                    <View>
+                      <Text>Task Completed</Text>
+                    </View>
+                    : null
+                }
+              </LinearGradient>
+            </CardView>
+
+            {this.state.secondCardVisible ?
+              <View>
+                <CardView
+                  cardElevation={30}
+                  cornerRadius={40}
+                  style={styles.cardViewStyle}>
+                  <LinearGradient colors={["#2e3e50", '#232f34']}>
+                    <Text style={{ fontSize: 27, fontWeight: 'bold', color: '#fff', textAlign: 'center', paddingTop: 10 }}>{this.state.secondCardHed}</Text>
+                    <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
+                      ____________________________________________________
                   </Text>
-                  <Text style={{ paddingTop: 5, paddingLeft: 10, color: "#fff", fontSize: 16, fontWeight: '100' }}>   {this.state.secondCardDis}</Text>
-                  <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                    ____________________________________________________
+                    <Text style={{ paddingTop: 5, paddingLeft: 10, color: "#fff", fontSize: 16, fontWeight: '100' }}>   {this.state.secondCardDis}</Text>
+                    <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
+                      ____________________________________________________
                   </Text>
-                  <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>Start Date: {moment().add(1, 'months').startOf('month').format('DD-MM-YYYY')}</Text>
-                  <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>End Date: {moment().add(1, 'months').endOf('month').format('DD-MM-YYYY')}</Text>
-                  <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>Target To Achive: {this.state.targetStpes2} Stpes</Text>
-                  <View flexDirection='row'>
-                    <TouchableOpacity onPress={this.joinPressed2} style={styles.button}>
-                      <Text style={styles.buttonText}>{this.state.eventCard2BtnTxt}</Text>
-                    </TouchableOpacity>
-                  </View>
-                </LinearGradient>
-              </CardView>
-            </View>
-            : null}
-
-
-
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>Start Date: {moment().add(1, 'months').startOf('month').format('DD-MM-YYYY')}</Text>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>End Date: {moment().add(1, 'months').endOf('month').format('DD-MM-YYYY')}</Text>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>Target To Achive: {this.state.targetStpes2} Stpes</Text>
+                    <View flexDirection='row'>
+                      <TouchableOpacity onPress={this.joinPressed2} style={styles.button}>
+                        <Text style={styles.buttonText}>{this.state.eventCard2BtnTxt}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </LinearGradient>
+                </CardView>
+              </View>
+              : null}
+          </View>
 
           {/* //dash Board code starts from Here */}
           <View alignItems='center'>
             <Divider orientation="center">
-              <Text style={styles.heading}>All Users Leaderboard</Text>
+              <Text style={styles.heading}>Leaderboard</Text>
             </Divider>
-
             <CardView
               flex={1}
               cardElevation={40}
