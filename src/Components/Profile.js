@@ -35,8 +35,8 @@ class Profile extends React.Component {
   Logout = async () => {
 
     Alert.alert(
-      'Exit App',
-      'Exiting the application?', [{
+      'Logout',
+      'Logout from the application?', [{
         text: 'Cancel',
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel'
@@ -44,6 +44,8 @@ class Profile extends React.Component {
         text: 'Ok',
         onPress: () => Firebase.auth().signOut().then(async () => {
           await AsyncStorage.removeItem('userId');
+          await AsyncStorage.removeItem("meal")
+          await AsyncStorage.removeItem("exercise")
           BackHandler.exitApp()
           console.log("LogOut successful")
         })
@@ -52,13 +54,10 @@ class Profile extends React.Component {
       cancelable: false
     }
     )
-
-
-
   }
 
   UNSAFE_componentWillMount() {
-    setInterval(this.getData, 4000); // runs every 3 seconds.     
+    setInterval(this.getData, 1000); // runs every 3 seconds.     
   }
   getData = () => {
     const user = Firebase.auth().currentUser

@@ -44,7 +44,7 @@ class Diet extends React.Component {
   }
   UNSAFE_componentWillMount = () => {
     this.demo();
-    setInterval(this.getData, 4000); // runs every 3 seconds.   
+    setInterval(this.getData, 1000); // runs every 3 seconds.   
   }
 
   // UNSAFE_componentWillMount = () => {
@@ -169,28 +169,24 @@ class Diet extends React.Component {
     let meal = await AsyncStorage.getItem("meal")
     let exercise = await AsyncStorage.getItem("exercise")
     if (meal == null && exercise == null) {
-      console.log('true1..................................................................................')
       this.setState({
         selectedValue: 1,
         selectedMeal: 1
       })
     }
     if (meal == null && exercise != null) {
-      console.log('true2..................................................................................')
       this.setState({
         selectedValue: parseInt(exercise),
         selectedMeal: 1
       })
     }
     if (meal != null && exercise == null) {
-      console.log('true3..................................................................................')
       this.setState({
         selectedValue: 1,
         selectedMeal: parseInt(meal)
       })
     }
     if (meal != null && exercise != null) {
-      console.log('true4..................................................................................')
       this.setState({
         selectedValue: parseInt(exercise),
         selectedMeal: parseInt(meal)
@@ -302,7 +298,7 @@ class Diet extends React.Component {
                   </View>
                 </View>
                 <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 16, paddingBottom: 10 }} numberOfLines={1}>
-                  ___________________________________________________
+                __________________________________________________
                 </Text>
                 <View flexDirection='row'>
                   <Text style={{ fontSize: 18, color: '#fff', paddingLeft: 15, paddingBottom: 10 }}>Note: </Text>
@@ -380,7 +376,7 @@ class Diet extends React.Component {
                 </TouchableOpacity>
 
                 <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 16, paddingBottom: 10 }} numberOfLines={1}>
-                  ___________________________________________________
+                __________________________________________________
                 </Text>
 
                 <View flexDirection='row' style={{ marginBottom: 15, marginTop: 5 }}>
@@ -443,7 +439,7 @@ class Diet extends React.Component {
                         <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#fff' }}> {((this.state.BMR * this.state.exerciseTypeValue + this.state.Calorie) * 0.34).toFixed(0)} Kcal/day</Text>
                       </View>
                       <View flexDirection='row' style={{ marginBottom: 15, marginTop: 5 }}>
-                        <Text style={{ fontSize: 18, color: '#fff', paddingLeft: 20 }}>Afternoon snack: ~</Text>
+                        <Text style={{ fontSize: 18, color: '#fff', paddingLeft: 20 }}>Evening snack: ~</Text>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#fff' }}> {((this.state.BMR * this.state.exerciseTypeValue + this.state.Calorie) * 0.07).toFixed(0)} Kcal/day</Text>
                       </View>
                       <View flexDirection='row' style={{ marginBottom: 15, marginTop: 5 }}>

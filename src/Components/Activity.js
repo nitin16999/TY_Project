@@ -2,16 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet, Linking, TouchableOpacity, AsyncStorage, ScrollView, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import qs from 'qs';
-import config from '../config/config' 
+import config from '../config/config'
 import moment from 'moment';
 import { withNavigationFocus } from 'react-navigation';
 
 class Activity extends React.Component {
 
   state = {
+    key: null,
+    date: moment().startOf('month').format('YYYY-MM-DD'),
     data: null,
-    date: null,
-    stpes: null
+    nn: []
   }
 
   OAuth(client_id) {
@@ -54,7 +55,7 @@ class Activity extends React.Component {
     fetch('https://api.fitbit.com/1.2/user/-/activities/tracker/steps/date/' + this.state.date + '/' + today + '.json', {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${this.state.data}`,
+        Authorization: `Bearer ${this.state.key}`,
       }
     })
       .then(res => res.json())
@@ -62,12 +63,17 @@ class Activity extends React.Component {
         // console.log(`res: ${JSON.stringify(res)}`);
         // console.log(`res: ${JSON.parse(res)}`);
         this.setState({
-          stpes: `${JSON.stringify(res)}`
+          data: `${JSON.stringify(res)}`
         })
       })
       .catch(err => {
         console.error('Error: ', err);
       });
+    let Obj = JSON.parse(this.state.data)
+    Obj = Obj["activities-tracker-stpes"]
+    for (x in Obj) {
+      this.state.nn += Obj[x].value;
+    }
   }
 
   UNSAFE_componentWillMount = async () => {
@@ -77,7 +83,7 @@ class Activity extends React.Component {
     }
     else {
       this.setState({
-        data: Access_Token
+        key: Access_Token
       })
       this.getData()
     }
@@ -88,8 +94,7 @@ class Activity extends React.Component {
         <StatusBar backgroundColor="#232f34" barStyle="light-content" />
         <ScrollView nestedScrollEnabled={true}>
           <View style={styles.container}>
-            <Text style={{ color: '#fff' }}>{this.state.data}</Text>
-            <Text style={{ color: '#fff' }}>{this.state.stpes}</Text>
+            <Text style={{ color: '#fff' }}>{this.state.nn}</Text>
           </View>
         </ScrollView>
       </LinearGradient>

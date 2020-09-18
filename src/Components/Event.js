@@ -60,12 +60,13 @@ class Event extends React.Component {
 
     accessToken: null,
     fillStpes: 50,
-    date: null
+    date: null,
+    stpes: null
   }
 
 
   UNSAFE_componentWillMount = () => {
-    setInterval(this.getData, 4000); // runs every 3 seconds.      
+    setInterval(this.getData, 1000); // runs every 3 seconds.      
   }
 
   getData = async () => {
@@ -88,7 +89,7 @@ class Event extends React.Component {
     if ((moment().format('Do')) == '1st') {
       let secondEventBooked = await AsyncStorage.getItem("secondEventBooked")
       if (secondEventBooked) {
-        let firstEventDate = moment().format('YYYY-MM-DD')
+        let firstEventDate = moment().startOf('month').format('YYYY-MM-DD')
         let firstEventBooked = "Booked"
         await AsyncStorage.setItem('firstEventDate', firstEventDate)
         await AsyncStorage.setItem('firstEventBooked', firstEventBooked)
@@ -123,6 +124,7 @@ class Event extends React.Component {
         date: firstEventDate
       })
       this.setData
+
     }
     else {
       this.setState({
@@ -133,7 +135,7 @@ class Event extends React.Component {
       })
     }
 
-    //manage second card
+    //manage 2nd card
     let secondEventBooked = await AsyncStorage.getItem("secondEventBooked")
     if (secondEventBooked) {
       this.setState({
@@ -166,7 +168,11 @@ class Event extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(`response: ${JSON.stringify(res)}`);
+        // console.log(`response: ${JSON.stringify(res)}`);
+        this.setState({
+          stpes: `${JSON.stringify(res)}`
+        })
+
       })
       .catch(err => {
         console.error('Error: ', err);
@@ -230,11 +236,11 @@ class Event extends React.Component {
                     <View>
                       <Text style={{ fontSize: 27, fontWeight: 'bold', color: '#fff', textAlign: 'center', paddingTop: 10 }}>{this.state.firstCardHed}</Text>
                       <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                        ____________________________________________________
+                        __________________________________________________
                     </Text>
                       <Text style={{ paddingTop: 5, paddingLeft: 10, paddingRight: 0, color: "#fff", fontSize: 16, fontWeight: '100' }}>   {(this.state.firstCardDis)}</Text>
                       <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                        ____________________________________________________
+                        __________________________________________________
                     </Text>
                       <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>Start Date: {moment().startOf('month').format('DD-MM-YYYY')}</Text>
                       <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>End Date: {moment().endOf('month').format('DD-MM-YYYY')}</Text>
@@ -253,7 +259,7 @@ class Event extends React.Component {
                       <LinearGradient colors={['#2e3e50', '#232f34']}>
                         <Text style={{ fontSize: 27, fontWeight: 'bold', color: '#fff', textAlign: 'center', paddingTop: 10 }}>{this.state.firstCardHed}</Text>
                         <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                          ____________________________________________________
+                          __________________________________________________
                       </Text>
                         <View flexDirection='row'>
                           <Text>                                         </Text>
@@ -274,14 +280,14 @@ class Event extends React.Component {
                           </AnimatedCircularProgress>
                         </View>
                         <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                          ____________________________________________________
+                          __________________________________________________
                       </Text>
                         <Text style={{ fontSize: 18, fontWeight: '900', color: '#3498db', textAlign: 'left', paddingLeft: 30 }}>Start Date: {moment().startOf('month').format('DD-MM-YYYY')}</Text>
                         <Text style={{ fontSize: 18, fontWeight: '900', color: '#3498db', textAlign: 'left', paddingLeft: 30 }}>End Date: {moment().endOf('month').format('DD-MM-YYYY')}</Text>
 
                         <Text style={{ fontSize: 18, fontWeight: '900', color: '#fff', textAlign: 'left', paddingLeft: 30, paddingBottom: 0 }}>Days Left: {daysLeftEventOne}</Text>
                         <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                          ____________________________________________________
+                          __________________________________________________
                       </Text>
                         <Text style={{ fontSize: 18, fontWeight: '900', color: '#3498db', textAlign: 'left', paddingLeft: 30 }}>Target To Achive: {this.state.targetStpes1} Stpes</Text>
                         <Text style={{ fontSize: 18, fontWeight: '900', color: '#fff', textAlign: 'left', paddingLeft: 30 }}>stpes Done: 60,000</Text>
@@ -309,11 +315,11 @@ class Event extends React.Component {
                   <LinearGradient colors={["#2e3e50", '#232f34']}>
                     <Text style={{ fontSize: 27, fontWeight: 'bold', color: '#fff', textAlign: 'center', paddingTop: 10 }}>{this.state.secondCardHed}</Text>
                     <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                      ____________________________________________________
+                      __________________________________________________
                   </Text>
                     <Text style={{ paddingTop: 5, paddingLeft: 10, color: "#fff", fontSize: 16, fontWeight: '100' }}>   {this.state.secondCardDis}</Text>
                     <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 15, paddingBottom: 10 }} numberOfLines={1}>
-                      ____________________________________________________
+                      __________________________________________________
                   </Text>
                     <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>Start Date: {moment().add(1, 'months').startOf('month').format('DD-MM-YYYY')}</Text>
                     <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#2ecc71', textAlign: 'left', paddingLeft: 15 }}>End Date: {moment().add(1, 'months').endOf('month').format('DD-MM-YYYY')}</Text>
@@ -409,7 +415,7 @@ class Event extends React.Component {
                         <Text style={{ fontSize: 20, color: "#fff", paddingLeft: 30, paddingBottom: 0 }}>  Others(Avg.)</Text>
                       </View>
                       <Text style={{ fontSize: 15, color: "#fff" }} numberOfLines={1}>
-                        ___________________________________________________
+                        __________________________________________________
                       </Text>
                     </View>
 
