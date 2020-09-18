@@ -46,13 +46,13 @@ export default class Login extends React.Component {
       Firebase
         .auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then( async(cred) => {
+        .then(async (cred) => {
           let userId = cred.user.uid;
-          await AsyncStorage.setItem("userId",userId);
+          await AsyncStorage.setItem("userId", userId);
           this.props.navigation.navigate('home');
         })
         .catch((error) => Alert.alert("Login Failed", error.message));
-        
+
     }
   }
 

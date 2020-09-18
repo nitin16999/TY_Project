@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Linking, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, Linking, TouchableOpacity, AsyncStorage, ScrollView, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import qs from 'qs';
-import config from '../config/config'
+import config from '../config/config' 
 import moment from 'moment';
 import { withNavigationFocus } from 'react-navigation';
 
@@ -10,7 +10,7 @@ class Activity extends React.Component {
 
   state = {
     data: null,
-    date: '2020-04-01',
+    date: null,
     stpes: null
   }
 
@@ -49,6 +49,7 @@ class Activity extends React.Component {
   }
 
   getData = () => {
+    console.disableYellowBox = true;
     today = moment().format('YYYY-MM-DD')
     fetch('https://api.fitbit.com/1.2/user/-/activities/tracker/steps/date/' + this.state.date + '/' + today + '.json', {
       method: 'GET',
@@ -58,7 +59,8 @@ class Activity extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(`res: ${JSON.stringify(res)}`);
+        // console.log(`res: ${JSON.stringify(res)}`);
+        // console.log(`res: ${JSON.parse(res)}`);
         this.setState({
           stpes: `${JSON.stringify(res)}`
         })
@@ -83,10 +85,13 @@ class Activity extends React.Component {
   render() {
     return (
       <LinearGradient colors={["#232f34", '#2e3e50', '#2e3e50']} style={styles.container} >
-        <View style={styles.container}>
-          <Text style={{ color: '#fff' }}>{this.state.data}</Text>
-          <Text style={{ color: '#fff' }}>{this.state.stpes}</Text>
-        </View>
+        <StatusBar backgroundColor="#232f34" barStyle="light-content" />
+        <ScrollView nestedScrollEnabled={true}>
+          <View style={styles.container}>
+            <Text style={{ color: '#fff' }}>{this.state.data}</Text>
+            <Text style={{ color: '#fff' }}>{this.state.stpes}</Text>
+          </View>
+        </ScrollView>
       </LinearGradient>
     );
   }

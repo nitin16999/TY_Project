@@ -36,17 +36,30 @@ class Diet extends React.Component {
     Obese: null,
     Calorie: 0,
     exerciseTypeValue: 1.2,
-    selectedValue: 1,
-    selectedMeal: 1,
+    selectedValue: null,
+    selectedMeal: null,
     threeMeal: true,
     fourMeal: false,
     fiveMeal: false
   }
-  UNSAFE_componentWillMount() {
-    setInterval(this.getData, 3000); // runs every 3 seconds.   
+  UNSAFE_componentWillMount = () => {
+    this.demo();
+    setInterval(this.getData, 4000); // runs every 3 seconds.   
   }
 
-  getData = () => {
+  // UNSAFE_componentWillMount = () => {
+  //   setTimeout(async () => {
+  //     let userId = await AsyncStorage.getItem("userId")
+  //     if (userId) {
+  //       this.props.navigation.navigate('home')
+  //     }
+  //     else {
+  //       this.props.navigation.navigate('main')
+  //     }
+  //   }, 2000)
+  // }
+
+  getData = async () => {
     console.disableYellowBox = true;
 
     //Data from DataBase
@@ -150,25 +163,103 @@ class Diet extends React.Component {
     console.ignoredYellowBox = ['Setting a timer'];
   }
 
-  //Intensity of the workout
-  exerciseType = (itemPosition) => {
-    if (itemPosition == 1) { this.setState({ exerciseTypeValue: 1.2, selectedValue: 1 }) }
-    if (itemPosition == 2) { this.setState({ exerciseTypeValue: 1.375, selectedValue: 2 }) }
-    if (itemPosition == 3) { this.setState({ exerciseTypeValue: 1.55, selectedValue: 3 }) }
-    if (itemPosition == 4) { this.setState({ exerciseTypeValue: 1.725, selectedValue: 4 }) }
-    if (itemPosition == 5) { this.setState({ exerciseTypeValue: 1.9, selectedValue: 5 }) }
+
+  // Initial meal type and exercise type check
+  demo = async () => {
+    let meal = await AsyncStorage.getItem("meal")
+    let exercise = await AsyncStorage.getItem("exercise")
+    if (meal == null && exercise == null) {
+      console.log('true1..................................................................................')
+      this.setState({
+        selectedValue: 1,
+        selectedMeal: 1
+      })
+    }
+    if (meal == null && exercise != null) {
+      console.log('true2..................................................................................')
+      this.setState({
+        selectedValue: parseInt(exercise),
+        selectedMeal: 1
+      })
+    }
+    if (meal != null && exercise == null) {
+      console.log('true3..................................................................................')
+      this.setState({
+        selectedValue: 1,
+        selectedMeal: parseInt(meal)
+      })
+    }
+    if (meal != null && exercise != null) {
+      console.log('true4..................................................................................')
+      this.setState({
+        selectedValue: parseInt(exercise),
+        selectedMeal: parseInt(meal)
+      })
+    }
+
   }
 
-  mealType = (itemPosition) => {
-    if (itemPosition == 1) { this.setState({ selectedMeal: 1, threeMeal: true, fourMeal: false, fiveMeal: false }) }
-    if (itemPosition == 2) { this.setState({ selectedMeal: 2, threeMeal: false, fourMeal: true, fiveMeal: false }) }
-    if (itemPosition == 3) { this.setState({ selectedMeal: 3, threeMeal: false, fourMeal: false, fiveMeal: true }) }
+  //Intensity of the workout
+  exerciseType = async (itemPosition) => {
+    if (itemPosition == 1) {
+      this.setState({ exerciseTypeValue: 1.2, selectedValue: 1 })
+      let e1 = (1).toString()
+      await AsyncStorage.removeItem("exercise")
+      await AsyncStorage.setItem("exercise", e1)
+    }
+    if (itemPosition == 2) {
+      this.setState({ exerciseTypeValue: 1.375, selectedValue: 2 })
+      let e2 = (2).toString()
+      await AsyncStorage.removeItem("exercise")
+      await AsyncStorage.setItem("exercise", e2)
+    }
+    if (itemPosition == 3) {
+      this.setState({ exerciseTypeValue: 1.55, selectedValue: 3 })
+      let e3 = (3).toString()
+      await AsyncStorage.removeItem("exercise")
+      await AsyncStorage.setItem("exercise", e3)
+    }
+    if (itemPosition == 4) {
+      this.setState({ exerciseTypeValue: 1.725, selectedValue: 4 })
+      let e4 = (4).toString()
+      await AsyncStorage.removeItem("exercise")
+      await AsyncStorage.setItem("exercise", e4)
+    }
+    if (itemPosition == 5) {
+      this.setState({ exerciseTypeValue: 1.9, selectedValue: 5 })
+      let e5 = (5).toString()
+      await AsyncStorage.removeItem("exercise")
+      await AsyncStorage.setItem("exercise", e5)
+    }
+  }
+
+
+  //number of meals perday
+  mealType = async (itemPosition) => {
+    if (itemPosition == 1) {
+      this.setState({ selectedMeal: 1, threeMeal: true, fourMeal: false, fiveMeal: false })
+      let m1 = (1).toString()
+      await AsyncStorage.removeItem("meal")
+      await AsyncStorage.setItem("meal", m1)
+    }
+    if (itemPosition == 2) {
+      this.setState({ selectedMeal: 2, threeMeal: false, fourMeal: true, fiveMeal: false })
+      let m2 = (2).toString()
+      await AsyncStorage.removeItem("meal")
+      await AsyncStorage.setItem("meal", m2)
+    }
+    if (itemPosition == 3) {
+      this.setState({ selectedMeal: 3, threeMeal: false, fourMeal: false, fiveMeal: true })
+      let m3 = (3).toString()
+      await AsyncStorage.removeItem('meal');
+      await AsyncStorage.setItem("meal", m3)
+    }
   }
 
   render() {
     return (
       <LinearGradient colors={["#232f34", '#2e3e50', '#2e3e50']} style={styles.container} >
-        <ScrollView>
+        <ScrollView nestedScrollEnabled={true}>
           <View style={styles.container}>
             <Divider orientation="center">
               <Text style={{ fontSize: 32, color: '#2ecc71', fontWeight: 'bold' }}>Overview</Text>
@@ -364,10 +455,6 @@ class Diet extends React.Component {
                 }
               </LinearGradient>
             </CardView>
-            <Divider orientation="center">
-              <Text style={{ fontSize: 32, color: '#2ecc71', fontWeight: 'bold' }}>Diet</Text>
-            </Divider>
-            
           </View>
         </ScrollView>
       </LinearGradient>
@@ -378,7 +465,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: 400
   },
   button: {
     width: 300,
@@ -394,6 +482,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     justifyContent: 'center',
     marginLeft: 20
+  },
+  buttonFood: {
+    width: 49,
+    backgroundColor: 'rgba(255, 255,255,0.15)',
+    borderRadius: 25,
+    paddingVertical: 10,
+    paddingHorizontal: 11
   }
 });
 export default withNavigationFocus(Diet);
