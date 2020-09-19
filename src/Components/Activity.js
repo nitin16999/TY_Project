@@ -69,11 +69,6 @@ class Activity extends React.Component {
       .catch(err => {
         console.error('Error: ', err);
       });
-    let Obj = JSON.parse(this.state.data)
-    Obj = Obj["activities-tracker-stpes"]
-    for (x in Obj) {
-      this.state.nn += Obj[x].value;
-    }
   }
 
   UNSAFE_componentWillMount = async () => {
@@ -88,6 +83,17 @@ class Activity extends React.Component {
       this.getData()
     }
   }
+
+
+  showData = () => {
+    let Obj = JSON.parse(this.state.data)
+    Obj = Obj["activities-tracker-stpes"]
+    for (x in Obj) {
+      this.state.nn += Obj[x].value;
+    }
+  }
+
+
   render() {
     return (
       <LinearGradient colors={["#232f34", '#2e3e50', '#2e3e50']} style={styles.container} >
@@ -95,6 +101,11 @@ class Activity extends React.Component {
         <ScrollView nestedScrollEnabled={true}>
           <View style={styles.container}>
             <Text style={{ color: '#fff' }}>{this.state.nn}</Text>
+
+            <TouchableOpacity onPress={() => this.showData()} style={styles.button} >
+                <Text style={styles.buttonText}>show data</Text>
+              </TouchableOpacity>
+
           </View>
         </ScrollView>
       </LinearGradient>
