@@ -12,7 +12,7 @@ class Activity extends React.Component {
     key: null,
     date: moment().startOf('month').format('YYYY-MM-DD'),
     data: null,
-    nn: []
+    steps: []
   }
 
   OAuth(client_id) {
@@ -86,10 +86,13 @@ class Activity extends React.Component {
 
 
   showData = () => {
-    let Obj = JSON.parse(this.state.data)
-    Obj = Obj["activities-tracker-stpes"]
+    console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    this.state.steps = JSON.parse(this.state.data)
+    this.state.steps = this.state.steps['activities-tracker-steps']
+
+    let Obj = this.state.steps
     for (x in Obj) {
-      this.state.nn += Obj[x].value;
+      console.log(Obj[x].value)
     }
   }
 
@@ -101,10 +104,9 @@ class Activity extends React.Component {
         <ScrollView nestedScrollEnabled={true}>
           <View style={styles.container}>
             <Text style={{ color: '#fff' }}>{this.state.nn}</Text>
-
             <TouchableOpacity onPress={() => this.showData()} style={styles.button} >
-                <Text style={styles.buttonText}>show data</Text>
-              </TouchableOpacity>
+              <Text style={styles.buttonText}>show data</Text>
+            </TouchableOpacity>
 
           </View>
         </ScrollView>
