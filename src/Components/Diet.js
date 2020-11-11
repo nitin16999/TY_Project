@@ -44,22 +44,10 @@ class Diet extends React.Component {
   }
   UNSAFE_componentWillMount = () => {
     this.demo();
-    setInterval(this.getData, 1000); // runs every 3 seconds.   
+    setInterval(this.getData, 3000); // runs every 3 seconds.   
   }
 
-  // UNSAFE_componentWillMount = () => {
-  //   setTimeout(async () => {
-  //     let userId = await AsyncStorage.getItem("userId")
-  //     if (userId) {
-  //       this.props.navigation.navigate('home')
-  //     }
-  //     else {
-  //       this.props.navigation.navigate('main')
-  //     }
-  //   }, 2000)
-  // }
-
-  getData = async () => {
+  getData = () => {
     console.disableYellowBox = true;
 
     //Data from DataBase
@@ -159,8 +147,6 @@ class Diet extends React.Component {
       })
     }
 
-    console.disableYellowBox = true;
-    console.ignoredYellowBox = ['Setting a timer'];
   }
 
 
@@ -288,7 +274,7 @@ class Diet extends React.Component {
                       <Text style={{ fontSize: 18, color: '#fff', paddingLeft: 0, fontWeight: 'bold', paddingTop: 10 }}> {this.state.Height}cm</Text>
                     </View>
                     <View flexDirection='row'>
-                      <Text style={{ fontSize: 18, color: '#fff', paddingLeft: 70, paddingTop: 10 }}>Wight:</Text>
+                      <Text style={{ fontSize: 18, color: '#fff', paddingLeft: 70, paddingTop: 10 }}>Weight:</Text>
                       <Text style={{ fontSize: 18, color: '#fff', paddingLeft: 0, fontWeight: 'bold', paddingTop: 10 }}> {this.state.Weight}kg</Text>
                     </View>
                     <View flexDirection='row'>
@@ -298,7 +284,7 @@ class Diet extends React.Component {
                   </View>
                 </View>
                 <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 16, paddingBottom: 10 }} numberOfLines={1}>
-                __________________________________________________
+                  __________________________________________________
                 </Text>
                 <View flexDirection='row'>
                   <Text style={{ fontSize: 18, color: '#fff', paddingLeft: 15, paddingBottom: 10 }}>Note: </Text>
@@ -376,7 +362,7 @@ class Diet extends React.Component {
                 </TouchableOpacity>
 
                 <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 16, paddingBottom: 10 }} numberOfLines={1}>
-                __________________________________________________
+                  __________________________________________________
                 </Text>
 
                 <View flexDirection='row' style={{ marginBottom: 15, marginTop: 5 }}>

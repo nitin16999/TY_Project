@@ -28,15 +28,15 @@ class Profile extends React.Component {
     showDetails: true,
     showUpdate: false,
     updateText: 'Update Details',
-    Weightt: null,
-    Heightt: null
+    Weightt: '',
+    Heightt: '',
   }
 
   Logout = async () => {
 
     Alert.alert(
       'Logout',
-      'Logout from the application?', [{
+      'Logout and exit the application?', [{
         text: 'Cancel',
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel'
@@ -57,9 +57,10 @@ class Profile extends React.Component {
   }
 
   UNSAFE_componentWillMount() {
-    setInterval(this.getData, 1000); // runs every 3 seconds.     
+    setInterval(this.getData, 7000); // runs every 3 seconds.   
   }
   getData = () => {
+    console.disableYellowBox = true;
     const user = Firebase.auth().currentUser
     if (user) {
       Firebase.firestore().collection('Users').doc(user.uid).get().then(doc => {
@@ -103,54 +104,78 @@ class Profile extends React.Component {
         showUpdate: false,
         updateText: 'Update Details'
       })
+
       const user = Firebase.auth().currentUser
-      if (this.state.Weightt != null && this.state.Heightt != null) {
-        Firebase.firestore().collection('Users').doc(user.uid).update({
-          Height: this.state.Heightt,
-          Weight: this.state.Weightt
-        })
-          .then(
-            this.setState({
-              Weightt: null,
-              Heightt: null
-            }),
-            Alert.alert("Height & Weight Updated"))
+      if (this.state.Weightt != '' && this.state.Heightt != '') {
+        var v1 = this.state.Weightt
+        var v2 = this.state.Heightt
+        var regex = /[0-9.]+$/;
+
+        if (regex.test(v1) != true || regex.test(v2) != true) {
+          Alert.alert("Enter Correct Height & Weight Value.");
+        }
+        else {
+          Firebase.firestore().collection('Users').doc(user.uid).update({
+            Height: this.state.Heightt,
+            Weight: this.state.Weightt
+          })
+            .then(
+              this.setState({
+                Weightt: '',
+                Heightt: ''
+              }),
+              Alert.alert("Height & Weight Updated"))
+        }
       }
-      if (this.state.Weightt == null && this.state.Heightt != null) {
-        Firebase.firestore().collection('Users').doc(user.uid).update({
-          Height: this.state.Heightt,
-        })
-          .then(
-            this.setState({
-              Heightt: null
-            }),
-            Alert.alert("Height Updated"))
+
+      if (this.state.Weightt == '' && this.state.Heightt != '') {
+        var v2 = this.state.Heightt
+        var regex = /[0-9.]+$/;
+        if (regex.test(v2) != true) {
+          Alert.alert("Enter Correct Height Value.");
+        }
+        else {
+          Firebase.firestore().collection('Users').doc(user.uid).update({
+            Height: this.state.Heightt,
+          })
+            .then(
+              this.setState({
+                Heightt: ''
+              }),
+              Alert.alert("Height Updated"))
+        }
+
       }
-      if (this.state.Weightt != null && this.state.Heightt == null) {
-        Firebase.firestore().collection('Users').doc(user.uid).update({
-          Weight: this.state.Weightt
-        })
-          .then(
-            this.setState({
-              Weightt: null
-            }),
-            Alert.alert("Weight Updated"))
+
+
+      if (this.state.Weightt != '' && this.state.Heightt == '') {
+        var v2 = this.state.Weightt
+        var regex = /[0-9.]+$/;
+        if (regex.test(v2) != true) {
+          Alert.alert("Enter Correct Weight Value.");
+        }
+        else {
+          Firebase.firestore().collection('Users').doc(user.uid).update({
+            Weight: this.state.Weightt
+          })
+            .then(
+              this.setState({
+                Weightt: ''
+              }),
+              Alert.alert("Weight Updated"))
+        }
       }
-      if (this.state.Weightt == null && this.state.Heightt == null) {
+      if (this.state.Weightt == '' && this.state.Heightt == '') {
         Alert.alert("Update Failed", "Height and Weight Fields Both are Empty")
       }
     }
   }
-
-
   render() {
     return (
-
       <LinearGradient colors={["#232f34", '#2e3e50', '#2e3e50']} style={styles.container} >
         <View style={{ width: '100%', Height: '100%' }}>
           <ScrollView>
             <View style={styles.container}>
-
               <Divider orientation="center">
                 <Text style={styles.heading}>Profile</Text>
               </Divider>
@@ -258,7 +283,7 @@ class Profile extends React.Component {
 
                   <Text style={{ fontSize: 15, color: "#fff", paddingLeft: 16, paddingBottom: 10 }} numberOfLines={1}>
                     __________________________________________________
-                </Text>
+                 </Text>
 
                   <View>
                     <TouchableOpacity onPress={this.updateDetails} style={{ paddingBottom: 10 }}>

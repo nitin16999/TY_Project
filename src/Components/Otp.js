@@ -6,7 +6,7 @@ import Firebase from '../config/firebase'
 export default class Otp extends React.Component {
   static navigationOptions = {
     fontWeight: 'bold',
-    title: 'OTP',
+    title: 'Reset Password',
     headerStyle: {
       backgroundColor: '#232f34',
     },
@@ -20,21 +20,33 @@ export default class Otp extends React.Component {
   emailValidate = () => {
     var v = this.state.emailText
     var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (regex.test(v) != true) {
-      Alert.alert("Enter Correct E-Mail Address.");
+    if (v != '') {
+      if (regex.test(v) != true) {
+        Alert.alert("Enter Correct E-Mail Address."
+        );
+      }
     }
   };
 
   otpHandler = () => {
-    //function to make simple alert 
     if (this.state.emailText == '') {
       Alert.alert('Fill in all the details');
     }
     else {
-      Firebase.auth().sendPasswordResetEmail(this.state.emailText).then(() => {
-        Alert.alert('Reset Password link has been sent to you e-mail account');
-      })
-        .catch((error) => Alert.alert("Failed", error.message))
+      var v = this.state.emailText
+      var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (v != '') {
+        if (regex.test(v) != true) {
+          Alert.alert("Enter Correct E-Mail Address."
+          );
+        }
+        else {
+          Firebase.auth().sendPasswordResetEmail(this.state.emailText).then(() => {
+            Alert.alert('Reset Password link has been sent to you e-mail account');
+          })
+            .catch((error) => Alert.alert("Failed", error.message))
+        }
+      }
     }
   };
 
@@ -54,7 +66,6 @@ export default class Otp extends React.Component {
             selectionColor="#232f34"
             keyboardType="email-address"
             onChangeText={emailText => this.setState({ emailText })}
-            onBlur={this.emailValidate}
           />
           <TouchableOpacity style={styles.button} onPress={this.otpHandler}>
             <Text style={styles.buttonText}>Reset Password</Text>

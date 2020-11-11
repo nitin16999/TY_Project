@@ -55,27 +55,33 @@ export default class Splash extends React.Component {
 
   nameValidate = () => {
     var v = this.state.TextInputName
-    var regex = /^[A-Za-z ]+$/;  // /[0-9`~!@#$%^&*()-_=+,.<>/?;:'"[\]\\|{}]+$/g;
-    if (regex.test(v) != true) {
-      setTimeout(function () {
-        Alert.alert("Enter Correct Name.");
-      }, 1000);
+    var regex = /^[A-Za-z ]+$/;  
+    if (v != '') {
+      if (regex.test(v) != true) {
+        setTimeout(function () {
+          Alert.alert("Enter Correct Name.");
+        }, 1000);
+      }
     }
   }
 
   heightValidate = () => {
     var v = this.state.TextInputHeight
     var regex = /[0-9.]+$/;
-    if (regex.test(v) != true) {
-      Alert.alert("Enter Correct Height Value.");
+    if (v != '') {
+      if (regex.test(v) != true) {
+        Alert.alert("Enter Correct Height Value.");
+      }
     }
   }
 
   weightValidate = () => {
     var v = this.state.TextInputWeight
     var regex = /[0-9.]+$/;
-    if (regex.test(v) != true) {
-      Alert.alert("Enter Correct Weight Value.");
+    if (v != '') {
+      if (regex.test(v) != true) {
+        Alert.alert("Enter Correct Height Value.");
+      }
     }
   }
 
@@ -187,6 +193,7 @@ export default class Splash extends React.Component {
             <Divider>
               <Text style={{ fontSize: 18, color: '#ffffff', fontWeight: '600' }}>Select Birth Date</Text>
             </Divider>
+
             <View style={{ paddingHorizontal: 28 }}>
               <TouchableOpacity style={styles.inputBox1}
                 onPress={this._showDateTimePicker}

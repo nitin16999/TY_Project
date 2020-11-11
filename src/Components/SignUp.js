@@ -30,9 +30,11 @@ export default class SignUp extends React.Component {
 
   emailValidate = () => {
     var v = this.state.emailText
-    var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (regex.test(v) != true) {
-      Alert.alert("Enter Correct E-Mail Address.");
+    if (v != '') {
+      var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (regex.test(v) != true) {
+        Alert.alert("Enter Correct E-Mail Address.");
+      }
     }
   }
 
@@ -41,10 +43,13 @@ export default class SignUp extends React.Component {
       this.setState({ passwordRule: false })
     }
     var v = this.state.passwordText
-    var regex = /^(?=.{5,10})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$/g;
-    if (regex.test(v) != true) {
-      Alert.alert("Enter Appropriate Password.");
+    if (v != '') {
+      var regex = /^(?=.{5,10})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$/g;
+      if (regex.test(v) != true) {
+        Alert.alert("Enter Appropriate Password.");
+      }
     }
+
   }
 
   eye_funnction = () => {

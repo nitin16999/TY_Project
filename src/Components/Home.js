@@ -75,7 +75,7 @@ const AppContainer = createAppContainer(AppNavigator);
 export default class Home extends React.Component {
   static navigationOptions = {
     fontWeight: 'bold',
-    title: 'Helath-Care',
+    title: 'Health-Care',
     headerLeft: null,
     headerStyle: {
       backgroundColor: '#232f34',

@@ -5,7 +5,7 @@ import { withNavigationFocus } from 'react-navigation';
 
 class Main extends React.Component {
   static navigationOptions = {
-    title: 'Helath-Care',
+    title: 'Health-Care',
     headerLeft: null,
     headerStyle: {
       backgroundColor: '#232f34',
@@ -14,7 +14,6 @@ class Main extends React.Component {
   }
 
   handleBackButton = () => {
-    //console.log(this.props.isFocused);
     if (this.props.isFocused) {
       Alert.alert(
         'Exit App',
