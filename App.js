@@ -9,8 +9,6 @@ import SignUp from './src/Components/SignUp';
 import Home from './src/Components/Home';
 import Otp from './src/Components/Otp';
 import Register from './src/Components/Register';
-import Example from './src/Components/Example';
-import Example2 from './src/Components/Example2';
 
 const AppNavigator = createStackNavigator(
   {
@@ -21,8 +19,6 @@ const AppNavigator = createStackNavigator(
     signup: SignUp,
     home: Home,
     register: Register,
-    example: Example,
-    example2: Example2,
   },
   {
     initialRouteName: 'splash'
